@@ -43,8 +43,8 @@ import numpy as np
 
 np.random.seed(1337)
 num_classes = 10
-
-
+# 生成对抗网络：首先要生成两个函数：generator（发生器）和discriminator（鉴别器）
+# 并训练它
 def build_generator(latent_size):
     # we will map a pair of (z, L), where z is a latent vector and L is a
     # label drawn from P_c, to image space (..., 28, 28, 1)
@@ -127,7 +127,7 @@ def build_discriminator():
 if __name__ == '__main__':
 
     # batch and latent size taken from the paper
-    epochs = 100
+    epochs = 3
     batch_size = 100
     latent_size = 100
 
@@ -180,16 +180,18 @@ if __name__ == '__main__':
     test_history = defaultdict(list)
 
     for epoch in range(1, epochs + 1):
+        # format函数
         print('Epoch {}/{}'.format(epoch, epochs))
 
         num_batches = int(x_train.shape[0] / batch_size)
+        # 进度条
         progress_bar = Progbar(target=num_batches)
 
         # we don't want the discriminator to also maximize the classification
-        # accuracy of the auxiliary classifier on generated images, so we
-        # don't train discriminator to produce class labels for generated
+        # accuracy（精度） of the auxiliary classifier（辅助分类器） on generated images, so we
+        # don't train discriminator to produce（产生） class labels for generated
         # images (see https://openreview.net/forum?id=rJXTf9Bxg).
-        # To preserve sum of sample weights for the auxiliary classifier,
+        # To preserve（保留） sum of sample weights for the auxiliary classifier,
         # we assign sample weight of 2 to the real images.
         disc_sample_weight = [np.ones(2 * batch_size),
                               np.concatenate((np.ones(batch_size) * 2,

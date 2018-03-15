@@ -1,7 +1,7 @@
-"""Example of using Hierarchical RNN (HRNN) to classify MNIST digits.
+"""Example of using Hierarchical（分层的） RNN (HRNN) to classify MNIST digits.
 
 HRNNs can learn across multiple levels
-of temporal hierarchy over a complex sequence.
+of temporal hierarchy （时间层次）over a complex sequence.
 Usually, the first recurrent layer of an HRNN
 encodes a sentence (e.g. of word vectors)
 into a  sentence vector.
@@ -75,6 +75,7 @@ encoded_rows = TimeDistributed(LSTM(row_hidden))(x)
 
 # Encodes columns of encoded rows.
 encoded_columns = LSTM(col_hidden)(encoded_rows)
+print('encoded_columns:', encoded_columns)
 
 # Final predictions and model.
 prediction = Dense(num_classes, activation='softmax')(encoded_columns)
